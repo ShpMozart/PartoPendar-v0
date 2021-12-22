@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const userRouter = require("./routes/userRoutes");
 const ticketRouter = require("./routes/ticketRoutes");
+const messageRouter = require("./routes/messageRoutes");
 const viewRouter = require("./routes/viewRoutes");
 
 // Start express app
@@ -40,6 +41,7 @@ app.use(cookieParser());
 
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/tickets", ticketRouter);
+app.use("/api/v1/messages", messageRouter);
 app.use("/", viewRouter);
 
 module.exports = app;
