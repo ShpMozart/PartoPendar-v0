@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="fa">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
+    />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <title>پرتوپندار | ورود</title>
+  </head>
+  <body>
+    <img class="background-pic" src="/../img/cctv.svg" alt="CCTV" />
+    <img class="background-pic-primary" src="/../img/cctv.svg" alt="CCTV" />
+    <div class="container pd-30">
+      <div class="navbar">
+        <nav>
+          <img src="/../img/logo/logo-text.png" alt="logo-partopendar" />
+        </nav>
+      </div>
+      <div class="user-box pd-20">
+        <form action="/api/v1/users/login" method="POST">
+          <div id="user">
+            <label for="username">نام کاربری:</label><br />
+            <input
+              type="text"
+              name="username"
+              id="username"
+              placeholder="نام کاربری"
+            /><br />
+          </div>
+          <div id="pass">
+            <label for="pass">کلمه عبور:</label><br />
+            <input
+              type="password"
+              name="password"
+              id="password"
+              placeholder="کلمه عبور"
+            />
+            <i id="eye-close" class="uil uil-eye-slash"></i>
+            <i id="eye-open" class="uil uil-eye"></i>
+          </div>
+          <input type="submit" name="submit-btn" id="submit-btn" value="ورود" />
+        </form>
+        <div class="box-footer">
+          <a href="https://partopendar.com/"
+            >بازگشت<i id="prev" class="uil uil-angle-left"></i
+          ></a>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div class="icons">
+          <a href="#"><i class="uil uil-instagram"></i></a>
+          <a href="mailto: partopendar@gmail.com"
+            ><i class="uil uil-envelope"></i
+          ></a>
+          <a href="tel: +989125790344"><i class="uil uil-phone"></i></a>
+        </div>
+        <div class="copy">
+          <p>
+            2021 Copyright <span class="primary-color"> Parto Pendar</span>,
+            Inc. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </div>
+    <script src="js/app.js"></script>
+  </body>
+</html>

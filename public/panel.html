@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="fa">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
+    />
+    <link rel="stylesheet" href="/css/panel.css" />
+    <title>پرتوپندار | پنل کاربری</title>
+  </head>
+  <body onload="loadDoc()">
+    <div class="navbar">
+      <h1 id="test" style="width: 20px; height: 20px">●</h1>
+      <div class="prof-pic">
+        <img src="/../img/persons/1.jpg" alt="royaee" />
+      </div>
+      <img src="/../img/logo/logo.png" alt="logo" />
+      <div class="menu-btn">
+        <div class="menu-btn__burger"></div>
+      </div>
+      <div class="menu-tabs close">
+        <ul class="menu-list">
+          <a href="#"><li>خانه</li></a>
+          <a href="/api/v1/users/"><li>مدیریت کارمند ها</li></a>
+          <a href="#"><li>مدیریت درخواست ها</li></a>
+        </ul>
+      </div>
+    </div>
+    <div id="neww" style="color: blueviolet"></div>
+    <hr />
+    <div id="pending" style="color: chartreuse"></div>
+    <hr />
+    <div id="done"></div>
+    <form method="POST" action="/file/pdf" enctype="multipart/form-data">
+      <span>pish factor</span>
+      <br />
+      <input type="file" name="pdf" />
+      <input type="submit" value="Upload" />
+      <br /><br /><br /><br /><br />
+    </form>
+
+    <form method="POST" action="/file/avatar" enctype="multipart/form-data">
+      <span>pish factor</span>
+      <br />
+      <input type="file" name="avatar" />
+      <input type="submit" value="Upload" />
+      <br /><br /><br /><br /><br />
+    </form>
+    <form method="GET" action="/file" enctype="multipart/form-data">
+      <input type="text" name="user" />
+      <input type="submit" value="Download" />
+    </form>
+
+    <div class="container pd-30">
+      <div class="footer">
+        <div class="icons">
+          <a href="#"><i class="uil uil-instagram"></i></a>
+          <a href="mailto: info@partopendar.com"
+            ><i class="uil uil-envelope"></i
+          ></a>
+          <a href="tel: +989125790344"><i class="uil uil-phone"></i></a>
+        </div>
+        <div class="copy">
+          <p>
+            2021 Copyright <span class="primary-color"> Parto Pendar</span>,
+            Inc. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </div>
+    <script>
+      AOS.init();
+    </script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="js/panel.js"></script>
+  </body>
+</html>
