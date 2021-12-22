@@ -1,19 +1,16 @@
 const Sequelize = require("sequelize");
-const db = require("../config/database");
+const db = require("../db/database");
 
-const Message = db.define(
-  "message",
-  {
-    senderId: {
-      type: Sequelize.STRING,
-    },
-    text: {
-      type: Sequelize.STRING,
-    },
+const Message = db.define("message", {
+  senderId: {
+    type: Sequelize.INTEGER,
   },
-  {
-    freezeTableName: true,
-  }
-);
+  recieverId: {
+    type: Sequelize.INTEGER,
+  },
+  text: {
+    type: Sequelize.STRING,
+  },
+});
 
 module.exports = Message;
