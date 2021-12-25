@@ -3,13 +3,16 @@ const User = require("./../models/User");
 const APIFeatures = require("./../utils/apiFeatures");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
+const Message = require("../models/Message");
 
 Ticket.belongsTo(User, { as: "senderUser", foreignKey: "senderId" });
 Ticket.belongsTo(User, { as: "workerUser", foreignKey: "workerId" });
+Ticket.hasMany(Message, { as: "message", foreignKey: "ticketId" });
 
 exports.getAll = catchAsync(async (req, res, next) => {
-  const ticket = await Ticket.findAll();
-
+  const ticket = await Ticket.findAll({
+    where: req.query,
+  });
   res.status(200).json({
     status: "success",
     results: ticket.length,
@@ -31,6 +34,11 @@ exports.getTicket = catchAsync(async (req, res, next) => {
         as: "workerUser",
         //attributes: ["username"],
       },
+      {
+        model: Message,
+        as: "message",
+        //attributes: ["username"],
+      },
     ],
   });
   if (!ticket) {
@@ -43,7 +51,6 @@ exports.getTicket = catchAsync(async (req, res, next) => {
     },
   });
 });
-
 const createTicket = async ({
   senderId,
   workerId,

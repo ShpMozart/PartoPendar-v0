@@ -3,48 +3,34 @@ const Ticket = require("./../models/Ticket");
 const User = require("./../models/User");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
-Message.sync({ force: true });
-Message.belongsTo(Ticket, { as: "Message", foreignKey: "ticketId" });
+
+Message.belongsTo(Ticket, { as: "ticket", foreignKey: "ticketId" });
 Message.belongsTo(User, { as: "senderUser", foreignKey: "senderId" });
 Message.belongsTo(User, { as: "recieverUser", foreignKey: "recieverId" });
 
 exports.getAll = catchAsync(async (req, res, next) => {
-  const ticket = await Ticket.findAll();
+  const message = await Message.findAll();
 
   res.status(200).json({
     status: "success",
-    results: ticket.length,
+    results: message.length,
     data: {
-      ticket,
+      message,
     },
   });
 });
-exports.getTicket = catchAsync(async (req, res, next) => {
-  const ticket = await Ticket.findByPk(req.params.id, {
-    include: [
-      {
-        model: User,
-        as: "senderUser",
-        //attributes: ["username"],
-      },
-      {
-        model: User,
-        as: "workerUser",
-        //attributes: ["username"],
-      },
-    ],
-  });
-  if (!ticket) {
+exports.getMessage = catchAsync(async (req, res, next) => {
+  const message = await Message.findByPk(req.params.id);
+  if (!message) {
     return next(new AppError("No ticket found with that ID", 404));
   }
   res.status(200).json({
     status: "success",
     data: {
-      ticket,
+      message,
     },
   });
 });
-
 const createMessage = async ({ ticketId, senderId, recieverId, text }) => {
   return await Message.create({
     ticketId,
@@ -66,25 +52,24 @@ exports.createMessage = catchAsync(async (req, res, next) => {
     });
   });
 });
-exports.updateTicket = catchAsync(async (req, res, next) => {
-  const ticket = await Ticket.findByPk(req.params.id);
-  const newTicket = await ticket.update(req.body);
-  if (!ticket) {
-    return next(new AppError("No user found with that ID", 404));
+exports.updateMessage = catchAsync(async (req, res, next) => {
+  const message = await Message.findByPk(req.params.id);
+  const newMessage = await message.update(req.body);
+  if (!message) {
+    return next(new AppError("No message found with that ID", 404));
   }
-
   res.status(200).json({
     status: "success",
     data: {
-      data: newTicket,
+      data: newMessage,
     },
   });
 });
-exports.deleteTicket = catchAsync(async (req, res, next) => {
-  const ticket = await Ticket.findByPk(req.params.id);
-  await ticket.destroy();
-  if (!ticket) {
-    return next(new AppError("No ticket found with that ID", 404));
+exports.deleteMessage = catchAsync(async (req, res, next) => {
+  const message = await Message.findByPk(req.params.id);
+  await message.destroy();
+  if (!message) {
+    return next(new AppError("No message found with that ID", 404));
   }
   res.status(204).json({
     status: "success",

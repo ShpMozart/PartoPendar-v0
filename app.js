@@ -3,6 +3,8 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const swaggerUi = require("swagger-ui-express");
+const swaggerDocument = require("./swagger.json");
 const userRouter = require("./routes/userRoutes");
 const ticketRouter = require("./routes/ticketRoutes");
 const messageRouter = require("./routes/messageRoutes");
@@ -43,5 +45,5 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/tickets", ticketRouter);
 app.use("/api/v1/messages", messageRouter);
 app.use("/", viewRouter);
-
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 module.exports = app;
