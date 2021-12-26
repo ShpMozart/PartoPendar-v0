@@ -8,6 +8,7 @@ const swaggerDocument = require("./swagger.json");
 const userRouter = require("./routes/userRoutes");
 const ticketRouter = require("./routes/ticketRoutes");
 const messageRouter = require("./routes/messageRoutes");
+const fileRouter = require("./routes/fileRoutes");
 const viewRouter = require("./routes/viewRoutes");
 
 // Start express app
@@ -44,6 +45,7 @@ app.use(cookieParser());
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/tickets", ticketRouter);
 app.use("/api/v1/messages", messageRouter);
+app.use("/api/v1/files", fileRouter);
 app.use("/", viewRouter);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 module.exports = app;

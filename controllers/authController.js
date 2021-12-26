@@ -55,8 +55,9 @@ const createSendToken = (user, statusCode, req, res) => {
 
   // Remove password from output
   user.password = undefined;
-  const showPath = path.join(__dirname + "/../public/password.html");
+
   if (!user.dataValues.passwordChanged) {
+    const showPath = path.join(__dirname + "/../public/password.html");
     res.sendFile(showPath);
   } else {
     const loader = path.join(__dirname + "/../public/loader.html");

@@ -1,6 +1,5 @@
 const Ticket = require("./../models/Ticket");
 const User = require("./../models/User");
-const APIFeatures = require("./../utils/apiFeatures");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 const Message = require("../models/Message");
@@ -12,6 +11,68 @@ Ticket.hasMany(Message, { as: "message", foreignKey: "ticketId" });
 exports.getAll = catchAsync(async (req, res, next) => {
   const ticket = await Ticket.findAll({
     where: req.query,
+  });
+  res.status(200).json({
+    status: "success",
+    results: ticket.length,
+    data: {
+      ticket,
+    },
+  });
+});
+exports.getAllUserTicket = catchAsync(async (req, res, next) => {
+  const ticket = await Ticket.findAll({
+    where: {
+      senderId: req.user.id,
+    },
+    include: [
+      {
+        model: User,
+        as: "senderUser",
+        //attributes: ["username"],
+      },
+      {
+        model: User,
+        as: "workerUser",
+        //attributes: ["username"],
+      },
+      {
+        model: Message,
+        as: "message",
+        //attributes: ["username"],
+      },
+    ],
+  });
+  res.status(200).json({
+    status: "success",
+    results: ticket.length,
+    data: {
+      ticket,
+    },
+  });
+});
+exports.getAllWorkerTicket = catchAsync(async (req, res, next) => {
+  const ticket = await Ticket.findAll({
+    where: {
+      workerId: req.user.id,
+    },
+    include: [
+      {
+        model: User,
+        as: "senderUser",
+        //attributes: ["username"],
+      },
+      {
+        model: User,
+        as: "workerUser",
+        //attributes: ["username"],
+      },
+      {
+        model: Message,
+        as: "message",
+        //attributes: ["username"],
+      },
+    ],
   });
   res.status(200).json({
     status: "success",
