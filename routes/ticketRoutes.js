@@ -5,7 +5,7 @@ const router = express.Router();
 
 //not secure we have to use authController.restrict and protect in future
 router.post("/create", authController.protect, ticketController.createTicket);
-router.get("/", authController.protect, ticketController.getAll);
+router.get("/", ticketController.getAll);
 router.get(
   "/userTicket",
   authController.protect,
@@ -16,7 +16,7 @@ router.get(
   authController.protect,
   ticketController.getAllWorkerTicket
 );
-router.get("/:id", authController.protect, ticketController.getTicket);
+router.get("/:id", ticketController.getTicket);
 router.post(
   "/update/:id",
   authController.protect,

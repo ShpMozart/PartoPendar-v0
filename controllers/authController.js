@@ -56,12 +56,18 @@ const createSendToken = (user, statusCode, req, res) => {
   // Remove password from output
   user.password = undefined;
 
+  /////////////////////////////// HATMAN CHECK SHAVAD ////////////////////////
   if (!user.dataValues.passwordChanged) {
     const showPath = path.join(__dirname + "/../public/password.html");
     res.sendFile(showPath);
   } else {
-    const loader = path.join(__dirname + "/../public/loader.html");
-    res.sendFile(loader);
+    if (user.dataValues.role === "admin") {
+      const loader = path.join(__dirname + "/../public/loader.html");
+      res.sendFile(loader);
+    } else {
+      const loader = path.join(__dirname + "/../public/panel.html");
+      res.sendFile(loader);
+    }
   }
 };
 
@@ -157,3 +163,36 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   // User.findByIdAndUpdate will NOT work as intended!
   // 3) Log user in, send JWT
 });
+exports.isLoggedIn = async (req, res, next) => {
+  if (req.cookies.jwt) {
+    try {
+      // 1) verify token
+      const decoded = await promisify(jwt.verify)(
+        req.cookies.jwt,
+        process.env.JWT_SECRET
+      );
+
+      // 2) Check if user still exists
+      const freshUser = await User.findByPk(decoded.id);
+      if (!freshUser) {
+        return next();
+      }
+      // THERE IS A LOGGED IN USER
+      req.user = freshUser;
+      res.locals.user = freshUser;
+      const loader = path.join(__dirname + "/../public/loader.html");
+      res.sendFile(loader);
+    } catch (err) {
+      return next();
+    }
+  }
+  next();
+};
+
+exports.logout = (req, res) => {
+  res.cookie("jwt", "loggedout", {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+  res.status(200).json({ status: "success" });
+};

@@ -53,3 +53,13 @@ exports.deleteUser = catchAsync(async (req, res, next) => {
     data: null,
   });
 });
+exports.getMe = (req, res, next) => {
+  //req.params.id = req.user.id;
+  const user = req.user;
+  res.status(200).json({
+    status: "success",
+    data: {
+      user,
+    },
+  });
+};

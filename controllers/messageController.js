@@ -3,10 +3,9 @@ const Ticket = require("./../models/Ticket");
 const User = require("./../models/User");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
-
 Message.belongsTo(Ticket, { as: "ticket", foreignKey: "ticketId" });
-Message.belongsTo(User, { as: "senderUser", foreignKey: "senderId" });
-Message.belongsTo(User, { as: "recieverUser", foreignKey: "recieverId" });
+// Message.belongsTo(User, { as: "senderUser", foreignKey: "senderId" });
+// Message.belongsTo(User, { as: "recieverUser", foreignKey: "recieverId" });
 
 exports.getAll = catchAsync(async (req, res, next) => {
   const message = await Message.findAll();
@@ -31,20 +30,20 @@ exports.getMessage = catchAsync(async (req, res, next) => {
     },
   });
 });
-const createMessage = async ({ ticketId, senderId, recieverId, text }) => {
+const createMessage = async ({ ticketId, from, text, factor }) => {
   return await Message.create({
     ticketId,
-    senderId,
-    recieverId,
+    from,
     text,
+    factor,
   });
 };
 exports.createMessage = catchAsync(async (req, res, next) => {
   createMessage({
     ticketId: req.body.ticketId,
-    senderId: req.user.id,
-    recieverId: req.body.recieverId,
+    from: req.body.from,
     text: req.body.text,
+    factor: req.body.factor,
   }).then((message) => {
     res.status(201).json({
       status: "success",

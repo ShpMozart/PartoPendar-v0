@@ -3,7 +3,7 @@ const User = require("./../models/User");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 const Message = require("../models/Message");
-
+const Email = require("./../utils/email");
 Ticket.belongsTo(User, { as: "senderUser", foreignKey: "senderId" });
 Ticket.belongsTo(User, { as: "workerUser", foreignKey: "workerId" });
 Ticket.hasMany(Message, { as: "message", foreignKey: "ticketId" });
@@ -105,6 +105,14 @@ exports.getTicket = catchAsync(async (req, res, next) => {
   if (!ticket) {
     return next(new AppError("No ticket found with that ID", 404));
   }
+  // if (req.user.role != "boss") {
+  //   if (req.user.id != ticket.senderId) {
+  //     return res.status(404).json({
+  //       status: "failed",
+  //       msg: "There is no ticket with that id",
+  //     });
+  //   }
+  // }
   res.status(200).json({
     status: "success",
     data: {
@@ -147,6 +155,7 @@ exports.createTicket = catchAsync(async (req, res, next) => {
     file: req.body.file,
     status: req.body.status,
   }).then((ticket) => {
+    // new Email(JSON.stringify(ticket)).setup(); //send email if ticket send by anyone
     res.status(201).json({
       status: "success",
       ticket,

@@ -5,14 +5,15 @@ const Message = db.define("message", {
   ticketId: {
     type: Sequelize.INTEGER,
   },
-  senderId: {
-    type: Sequelize.INTEGER,
-  },
-  recieverId: {
-    type: Sequelize.INTEGER,
+  from: {
+    type: Sequelize.STRING,
   },
   text: {
     type: Sequelize.STRING,
+  },
+  factor: {
+    allowNull: true,
+    type: Sequelize.JSON,
   },
 });
 

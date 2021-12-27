@@ -10,4 +10,6 @@ router.post(
   fileController.fields,
   fileController.save
 );
+router.get("/", authController.protect, fileController.getFiles);
+router.get("/:id", authController.protect, fileController.downloadFile);
 module.exports = router;

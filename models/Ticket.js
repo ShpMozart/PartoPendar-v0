@@ -29,9 +29,22 @@ const Ticket = db.define("ticket", {
     allowNull: true,
   },
   status: {
-    type: Sequelize.ENUM(["pending", "proccesing", "done"]),
+    type: Sequelize.ENUM(["pending", "proccessing", "done"]),
     defaultValue: "pending",
   },
 });
-
+/*
+createdAt: {
+      type: Sequelize.D,
+      defaultValue: new Date().toString(),
+    },
+    updatedAt: {
+      type: Sequelize.STRING,
+      defaultValue: new Date().toString(),
+    },
+  },
+  {
+    timestamps: false,
+  }
+*/
 module.exports = Ticket;

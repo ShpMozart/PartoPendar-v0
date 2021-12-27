@@ -31,3 +31,20 @@ exports.save = catchAsync(async (req, res, next) => {
   });
   res.send("done");
 });
+
+exports.getFiles = catchAsync(async (req, res, next) => {
+  const file = await File.findAll({
+    where: req.query,
+  });
+  res.status(200).json({
+    status: "success",
+    results: file.length,
+    data: {
+      file,
+    },
+  });
+});
+exports.downloadFile = catchAsync(async (req, res, next) => {
+  const file = await File.findByPk(req.params.id);
+  res.download(__dirname + "/../uploads/" + file.fileAddress);
+});
