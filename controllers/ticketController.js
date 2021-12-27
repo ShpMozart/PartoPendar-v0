@@ -1,5 +1,6 @@
 const Ticket = require("./../models/Ticket");
 const User = require("./../models/User");
+const File = require("./../models/File");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 const Message = require("../models/Message");
@@ -7,6 +8,7 @@ const Email = require("./../utils/email");
 Ticket.belongsTo(User, { as: "senderUser", foreignKey: "senderId" });
 Ticket.belongsTo(User, { as: "workerUser", foreignKey: "workerId" });
 Ticket.hasMany(Message, { as: "message", foreignKey: "ticketId" });
+Ticket.hasMany(File, { as: "files", foreignKey: "ticketId" });
 
 exports.getAll = catchAsync(async (req, res, next) => {
   const ticket = await Ticket.findAll({
@@ -98,6 +100,11 @@ exports.getTicket = catchAsync(async (req, res, next) => {
       {
         model: Message,
         as: "message",
+        //attributes: ["username"],
+      },
+      {
+        model: File,
+        as: "files",
         //attributes: ["username"],
       },
     ],
