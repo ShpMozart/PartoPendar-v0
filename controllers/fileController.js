@@ -21,7 +21,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 exports.fields = upload.single("pdf");
 exports.save = catchAsync(async (req, res, next) => {
-  console.log(req.file);
+  //console.log(req.file);
   let file = req.file;
   let name = file.filename;
   create({
