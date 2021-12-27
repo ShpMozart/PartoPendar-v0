@@ -5,7 +5,7 @@
     "title": "PartoPendar",
     "description": "PartoPendar API"
   },
-  "host": "localhost:3000",
+  "host": "192.168.1.107:3000",
   "basePath": "/",
   "tags": [
     {
