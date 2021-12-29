@@ -22,17 +22,12 @@ exports.getAll = catchAsync(async (req, res, next) => {
     },
   });
 });
-exports.getAllUserTicket = catchAsync(async (req, res, next) => {
+exports.getAllClientTicket = catchAsync(async (req, res, next) => {
   const ticket = await Ticket.findAll({
     where: {
       senderId: req.user.id,
     },
     include: [
-      {
-        model: User,
-        as: "senderUser",
-        //attributes: ["username"],
-      },
       {
         model: User,
         as: "workerUser",
@@ -41,6 +36,11 @@ exports.getAllUserTicket = catchAsync(async (req, res, next) => {
       {
         model: Message,
         as: "message",
+        //attributes: ["username"],
+      },
+      {
+        model: File,
+        as: "files",
         //attributes: ["username"],
       },
     ],
@@ -65,13 +65,13 @@ exports.getAllWorkerTicket = catchAsync(async (req, res, next) => {
         //attributes: ["username"],
       },
       {
-        model: User,
-        as: "workerUser",
+        model: Message,
+        as: "message",
         //attributes: ["username"],
       },
       {
-        model: Message,
-        as: "message",
+        model: File,
+        as: "files",
         //attributes: ["username"],
       },
     ],
@@ -112,14 +112,6 @@ exports.getTicket = catchAsync(async (req, res, next) => {
   if (!ticket) {
     return next(new AppError("No ticket found with that ID", 404));
   }
-  // if (req.user.role != "boss") {
-  //   if (req.user.id != ticket.senderId) {
-  //     return res.status(404).json({
-  //       status: "failed",
-  //       msg: "There is no ticket with that id",
-  //     });
-  //   }
-  // }
   res.status(200).json({
     status: "success",
     data: {
@@ -162,7 +154,7 @@ exports.createTicket = catchAsync(async (req, res, next) => {
     file: req.body.file,
     status: req.body.status,
   }).then((ticket) => {
-    // new Email(JSON.stringify(ticket)).setup(); //send email if ticket send by anyone
+    // new Email(JSON.stringify(ticket)).setup(); //send email if ticket send by client
     res.status(201).json({
       status: "success",
       ticket,

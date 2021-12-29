@@ -3,35 +3,41 @@ const multer = require("multer");
 const File = require("./../models/File");
 const User = require("./../models/User");
 const Ticket = require("../models/Ticket");
+
 File.belongsTo(User, { as: "senderUser", foreignKey: "senderId" });
 File.belongsTo(Ticket, { as: "ticket", foreignKey: "ticketId" });
-const create = async ({ ticketId, senderId, fileAddress }) => {
+
+const create = async ({ ticketId, senderId, from, fileAddress }) => {
   return await File.create({
     ticketId,
     senderId,
+    from,
     fileAddress,
   });
 };
 var storage = multer.diskStorage({
   destination: "./uploads/",
   filename: function (req, file, cb) {
-    cb(null, req.user.username + "-" + file.originalname);
+    const date = new Date();
+    cb(
+      null,
+      req.user.username + "-" + date.toDateString() + "-" + file.originalname
+    );
   },
 });
 var upload = multer({ storage: storage });
 exports.fields = upload.single("pdf");
 exports.save = catchAsync(async (req, res, next) => {
-  //console.log(req.file);
   let file = req.file;
   let name = file.filename;
   create({
     ticketId: req.body.ticketId,
     senderId: req.user.id,
+    from: req.user.role,
     fileAddress: name,
   });
   res.send("done");
 });
-
 exports.getFiles = catchAsync(async (req, res, next) => {
   const file = await File.findAll({
     where: req.query,

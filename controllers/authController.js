@@ -2,6 +2,7 @@ const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt-nodejs");
 const path = require("path");
+const viewController = require("./../controllers/viewController");
 const catchAsync = require("./../utils/catchAsync");
 const User = require("./../models/User");
 const AppError = require("./../utils/appError");
@@ -57,16 +58,26 @@ const createSendToken = (user, statusCode, req, res) => {
   user.password = undefined;
 
   /////////////////////////////// HATMAN CHECK SHAVAD ////////////////////////
+  let showPath = path.join(__dirname + "/../public/password.html");
   if (!user.dataValues.passwordChanged) {
-    const showPath = path.join(__dirname + "/../public/password.html");
-    res.sendFile(showPath);
+    return res.sendFile(showPath);
   } else {
     if (user.dataValues.role === "admin") {
-      const loader = path.join(__dirname + "/../public/loader.html");
-      res.sendFile(loader);
-    } else {
-      const loader = path.join(__dirname + "/../public/panel.html");
-      res.sendFile(loader);
+      //panel admin
+      showPath = path.join(__dirname + "/../public/admin.html");
+      return res.sendFile(showPath);
+    } else if (user.dataValues.role === "boss") {
+      //panel boss
+      showPath = path.join(__dirname + "/../public/boss.html");
+      return res.sendFile(showPath);
+    } else if (user.dataValues.role === "client") {
+      //panel client
+      showPath = path.join(__dirname + "/../public/client.html");
+      return res.sendFile(showPath);
+    } else if (user.dataValues.role === "worker") {
+      //panel worker
+      showPath = path.join(__dirname + "/../public/worker.html");
+      return res.sendFile(showPath);
     }
   }
 };
@@ -171,7 +182,6 @@ exports.isLoggedIn = async (req, res, next) => {
         req.cookies.jwt,
         process.env.JWT_SECRET
       );
-
       // 2) Check if user still exists
       const freshUser = await User.findByPk(decoded.id);
       if (!freshUser) {
@@ -195,4 +205,15 @@ exports.logout = (req, res) => {
     httpOnly: true,
   });
   res.status(200).json({ status: "success" });
+};
+exports.restrictTo = (...roles) => {
+  return (req, res, next) => {
+    console.log(req.user);
+    if (!roles.includes(req.user.role)) {
+      return next(
+        new AppError("You do not have permission to perform this action", 403)
+      );
+    }
+    next();
+  };
 };

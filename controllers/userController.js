@@ -3,7 +3,7 @@ const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 
 exports.getAll = catchAsync(async (req, res, next) => {
-  const user = await User.findAll();
+  const user = await User.findAll({ where: req.query });
   res.status(200).json({
     status: "success",
     data: {

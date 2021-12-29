@@ -1,11 +1,8 @@
 const Message = require("./../models/Message");
 const Ticket = require("./../models/Ticket");
-const User = require("./../models/User");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 Message.belongsTo(Ticket, { as: "ticket", foreignKey: "ticketId" });
-// Message.belongsTo(User, { as: "senderUser", foreignKey: "senderId" });
-// Message.belongsTo(User, { as: "recieverUser", foreignKey: "recieverId" });
 
 exports.getAll = catchAsync(async (req, res, next) => {
   const message = await Message.findAll();

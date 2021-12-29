@@ -10,7 +10,6 @@ closeEye.addEventListener("click", ElementOpen);
 openEye.addEventListener("click", ElementClose);
 passSecond.addEventListener("paste", (e) => preventDef(e));
 // preventForm.addEventListener('submit');
-//submitBtn.addEventListener('click', location.assign('/panel'));
 //functions
 function ElementOpen() {
   closeEye.style.display = "none";

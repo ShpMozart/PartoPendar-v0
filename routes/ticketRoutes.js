@@ -4,27 +4,41 @@ const ticketController = require("./../controllers/ticketController");
 const router = express.Router();
 
 //not secure we have to use authController.restrict and protect in future
-router.post("/create", authController.protect, ticketController.createTicket);
+router.post(
+  "/create",
+  authController.protect,
+  authController.restrictTo("admin", "client"),
+  ticketController.createTicket
+);
 router.get("/", ticketController.getAll);
 router.get(
-  "/userTicket",
+  "/clientTicket",
   authController.protect,
-  ticketController.getAllUserTicket
+  authController.restrictTo("client"),
+  ticketController.getAllClientTicket
 );
 router.get(
   "/workerTicket",
   authController.protect,
+  authController.restrictTo("worker"),
   ticketController.getAllWorkerTicket
 );
-router.get("/:id", ticketController.getTicket);
+router.get(
+  "/:id",
+  authController.protect,
+  authController.restrictTo("boss", "admin"),
+  ticketController.getTicket
+);
 router.post(
   "/update/:id",
   authController.protect,
+  authController.restrictTo("boss", "admin"),
   ticketController.updateTicket
 );
 router.delete(
   "/delete/:id",
   authController.protect,
+  authController.restrictTo("boss", "admin"),
   ticketController.deleteTicket
 );
 
