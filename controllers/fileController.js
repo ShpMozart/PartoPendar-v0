@@ -3,6 +3,7 @@ const multer = require("multer");
 const File = require("./../models/File");
 const User = require("./../models/User");
 const Ticket = require("../models/Ticket");
+const Email = require("./../utils/email");
 
 File.belongsTo(User, { as: "senderUser", foreignKey: "senderId" });
 File.belongsTo(Ticket, { as: "ticket", foreignKey: "ticketId" });
@@ -15,7 +16,7 @@ const create = async ({ ticketId, senderId, from, fileAddress }) => {
     fileAddress,
   });
 };
-var storage = multer.diskStorage({
+const storage = multer.diskStorage({
   destination: "./uploads/",
   filename: function (req, file, cb) {
     const date = new Date();
@@ -25,7 +26,7 @@ var storage = multer.diskStorage({
     );
   },
 });
-var upload = multer({ storage: storage });
+const upload = multer({ storage: storage });
 exports.fields = upload.single("pdf");
 exports.save = catchAsync(async (req, res, next) => {
   let file = req.file;
@@ -36,6 +37,9 @@ exports.save = catchAsync(async (req, res, next) => {
     from: req.user.role,
     fileAddress: name,
   });
+  new Email(
+    JSON.stringify(`You have file from : ${req.user.username} `)
+  ).setup();
   res.send("done");
 });
 exports.getFiles = catchAsync(async (req, res, next) => {
@@ -49,6 +53,10 @@ exports.getFiles = catchAsync(async (req, res, next) => {
       file,
     },
   });
+});
+exports.getFile = catchAsync(async (req, res, next) => {
+  const file = await File.findByPk(req.params.id);
+  res.download(__dirname + "/../uploads/" + file.fileAddress);
 });
 exports.downloadFile = catchAsync(async (req, res, next) => {
   const file = await File.findByPk(req.params.id);

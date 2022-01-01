@@ -38,7 +38,7 @@ const createMessage = async ({ ticketId, from, text, factor }) => {
 exports.createMessage = catchAsync(async (req, res, next) => {
   createMessage({
     ticketId: req.body.ticketId,
-    from: req.body.from,
+    from: req.user.role,
     text: req.body.text,
     factor: req.body.factor,
   }).then((message) => {

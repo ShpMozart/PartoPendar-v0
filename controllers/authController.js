@@ -2,7 +2,6 @@ const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt-nodejs");
 const path = require("path");
-const viewController = require("./../controllers/viewController");
 const catchAsync = require("./../utils/catchAsync");
 const User = require("./../models/User");
 const AppError = require("./../utils/appError");
@@ -208,7 +207,6 @@ exports.logout = (req, res) => {
 };
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
-    console.log(req.user);
     if (!roles.includes(req.user.role)) {
       return next(
         new AppError("You do not have permission to perform this action", 403)

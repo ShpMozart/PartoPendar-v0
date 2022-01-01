@@ -5,6 +5,7 @@ const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 const Message = require("../models/Message");
 const Email = require("./../utils/email");
+
 Ticket.belongsTo(User, { as: "senderUser", foreignKey: "senderId" });
 Ticket.belongsTo(User, { as: "workerUser", foreignKey: "workerId" });
 Ticket.hasMany(Message, { as: "message", foreignKey: "ticketId" });
