@@ -5,6 +5,8 @@ const User = require("./../models/User");
 const Ticket = require("../models/Ticket");
 const Email = require("./../utils/email");
 
+File.sync({ force: true });
+
 File.belongsTo(User, { as: "senderUser", foreignKey: "senderId" });
 File.belongsTo(Ticket, { as: "ticket", foreignKey: "ticketId" });
 

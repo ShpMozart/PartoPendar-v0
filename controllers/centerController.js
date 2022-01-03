@@ -1,9 +1,9 @@
 const Center = require("./../models/Center");
 const City = require("./../models/City");
-
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 
+Center.sync({ force: true });
 Center.belongsTo(City, { as: "centers", foreignKey: "cityId" });
 
 const createCenter = async ({ cityId, center }) => {

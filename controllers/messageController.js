@@ -2,6 +2,9 @@ const Message = require("./../models/Message");
 const Ticket = require("./../models/Ticket");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
+
+Message.sync({ force: true });
+
 Message.belongsTo(Ticket, { as: "ticket", foreignKey: "ticketId" });
 
 exports.getAll = catchAsync(async (req, res, next) => {
