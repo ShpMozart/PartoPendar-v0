@@ -3,8 +3,8 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt-nodejs");
 const path = require("path");
 const catchAsync = require("./../utils/catchAsync");
-const User = require("./../models/User");
 const AppError = require("./../utils/appError");
+const User = require("./../models/User");
 
 //add user to db
 const createUser = async ({
@@ -31,6 +31,7 @@ const updateUserPassword = async (user, { password, passwordChanged }) => {
     passwordChanged,
   });
 };
+
 //get user from db
 const getUser = async (obj) => {
   return await User.findOne({
@@ -42,6 +43,12 @@ const getUser = async (obj) => {
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: process.env.JWT_EXPIRES_IN,
+  });
+};
+//sign jwt token
+const signRefreshToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_REFRESH_SECRET, {
+    expiresIn: process.env.JWT_REFRESH_EXPIRES_IN,
   });
 };
 //save jwt in cookie and route to panel.html or password.html
@@ -80,6 +87,14 @@ const createSendToken = (user, statusCode, req, res) => {
     }
   }
 };
+const createSendRefreshToken = async (user, req, res) => {
+  const refreshToken = signRefreshToken(user.id);
+  res.cookie("refreshToken", refreshToken, {
+    maxAge: 1000 * 60 * 60 * 24,
+    httpOnly: true,
+    secure: req.secure || req.headers["x-forwarded-proto"] === "https",
+  });
+};
 
 //register user (permission:admin)
 exports.signup = catchAsync(async (req, res, next) => {
@@ -108,12 +123,12 @@ exports.login = catchAsync(async (req, res, next) => {
     if (!user) {
       return res.status(401).json({ message: "No such user found" });
     }
-
     bcrypt.compare(password, user.password, async (err, result) => {
       if (err) {
         res.status(403).json({ message: "incorrect password" });
       }
       if (result) {
+        createSendRefreshToken(user, req, res);
         createSendToken(user, 200, req, res);
       } else {
         res.status(403).json({ message: "incorrect password" });
@@ -133,15 +148,37 @@ exports.protect = catchAsync(async (req, res, next) => {
   } else if (req.cookies.jwt) {
     token = req.cookies.jwt;
   }
-  if (!token) {
-    return next(
-      new AppError("You are not logged in! Please log in to get access.", 401)
-    );
-  }
 
   // 2) Verification token
-  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-
+  let decoded;
+  let decodedRefreshToken;
+  try {
+    decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+  } catch (err) {
+    if (err) {
+      const rToken = req.cookies.refreshToken;
+      try {
+        decodedRefreshToken = await promisify(jwt.verify)(
+          rToken,
+          process.env.JWT_REFRESH_SECRET
+        );
+      } catch (err) {
+        if (err.name === "TokenExpiredError") {
+          return next(new AppError("Please log in to get access.", 401));
+        }
+      }
+      if (!req.cookies.refreshToken) {
+        return next(new AppError("Please log in to get access.", 401));
+      }
+      const token = signToken(decodedRefreshToken.id);
+      res.cookie("jwt", token, {
+        maxAge: 1000 * 60 * 60 * 24,
+        httpOnly: true,
+        secure: req.secure || req.headers["x-forwarded-proto"] === "https",
+      });
+      decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+    }
+  }
   // 3) Check if user still exists
   const freshUser = await User.findByPk(decoded.id);
   if (!freshUser) {

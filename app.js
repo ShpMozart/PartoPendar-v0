@@ -9,8 +9,10 @@ const userRouter = require("./routes/userRoutes");
 const ticketRouter = require("./routes/ticketRoutes");
 const messageRouter = require("./routes/messageRoutes");
 const fileRouter = require("./routes/fileRoutes");
+const cityRouter = require("./routes/cityRoutes");
+const centerRouter = require("./routes/centerRoutes");
 const viewRouter = require("./routes/viewRoutes");
-
+const errorHandler = require("./controllers/errorController");
 // Start express app
 const app = express();
 app.use(
@@ -46,6 +48,10 @@ app.use("/api/v1/users", userRouter);
 app.use("/api/v1/tickets", ticketRouter);
 app.use("/api/v1/messages", messageRouter);
 app.use("/api/v1/files", fileRouter);
+app.use("/api/v1/city", cityRouter);
+app.use("/api/v1/center", centerRouter);
 app.use("/", viewRouter);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+//app.use(errorHandler);
 module.exports = app;

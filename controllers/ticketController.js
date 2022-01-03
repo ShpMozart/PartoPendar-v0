@@ -28,23 +28,6 @@ exports.getAllClientTicket = catchAsync(async (req, res, next) => {
     where: {
       senderId: req.user.id,
     },
-    include: [
-      {
-        model: User,
-        as: "workerUser",
-        //attributes: ["username"],
-      },
-      {
-        model: Message,
-        as: "message",
-        //attributes: ["username"],
-      },
-      {
-        model: File,
-        as: "files",
-        //attributes: ["username"],
-      },
-    ],
   });
   res.status(200).json({
     status: "success",
@@ -54,28 +37,12 @@ exports.getAllClientTicket = catchAsync(async (req, res, next) => {
     },
   });
 });
+
 exports.getAllWorkerTicket = catchAsync(async (req, res, next) => {
   const ticket = await Ticket.findAll({
     where: {
       workerId: req.user.id,
     },
-    include: [
-      {
-        model: User,
-        as: "senderUser",
-        //attributes: ["username"],
-      },
-      {
-        model: Message,
-        as: "message",
-        //attributes: ["username"],
-      },
-      {
-        model: File,
-        as: "files",
-        //attributes: ["username"],
-      },
-    ],
   });
   res.status(200).json({
     status: "success",
@@ -86,7 +53,7 @@ exports.getAllWorkerTicket = catchAsync(async (req, res, next) => {
   });
 });
 exports.getTicket = catchAsync(async (req, res, next) => {
-  const ticket = await Ticket.findByPk(req.params.id, {
+  const ticket = await Ticket.findByPk((req.params.id - 23321) / 234, {
     include: [
       {
         model: User,
@@ -112,6 +79,11 @@ exports.getTicket = catchAsync(async (req, res, next) => {
   });
   if (!ticket) {
     return next(new AppError("No ticket found with that ID", 404));
+  }
+  if (req.user.id != ticket.senderId) {
+    if (req.user.id != ticket.workerId) {
+      return next(new AppError("No ticket found with that ID", 404));
+    }
   }
   res.status(200).json({
     status: "success",

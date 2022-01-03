@@ -23,12 +23,7 @@ router.get(
   authController.restrictTo("worker"),
   ticketController.getAllWorkerTicket
 );
-router.get(
-  "/:id",
-  authController.protect,
-  authController.restrictTo("boss", "admin"),
-  ticketController.getTicket
-);
+router.get("/:id", authController.protect, ticketController.getTicket);
 router.post(
   "/update/:id",
   authController.protect,
