@@ -24,6 +24,9 @@ const Ticket = db.define("ticket", {
   text: {
     type: Sequelize.STRING,
   },
+  fileId: {
+    type: Sequelize.INTEGER,
+  },
   status: {
     type: Sequelize.ENUM(["pending", "proccessing", "done"]),
     defaultValue: "pending",

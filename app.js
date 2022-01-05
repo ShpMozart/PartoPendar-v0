@@ -12,6 +12,8 @@ const fileRouter = require("./routes/fileRoutes");
 const cityRouter = require("./routes/cityRoutes");
 const centerRouter = require("./routes/centerRoutes");
 const viewRouter = require("./routes/viewRoutes");
+const factorRouter = require("./routes/factorRoutes");
+const gozareshRouter = require("./routes/gozareshRoutes");
 const errorHandler = require("./controllers/errorController");
 // Start express app
 const app = express();
@@ -50,6 +52,8 @@ app.use("/api/v1/messages", messageRouter);
 app.use("/api/v1/files", fileRouter);
 app.use("/api/v1/city", cityRouter);
 app.use("/api/v1/center", centerRouter);
+app.use("/api/v1/factor", factorRouter);
+app.use("/api/v1/gozaresh", gozareshRouter);
 app.use("/", viewRouter);
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 

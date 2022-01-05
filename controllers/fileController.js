@@ -5,14 +5,12 @@ const User = require("./../models/User");
 const Ticket = require("../models/Ticket");
 const Email = require("./../utils/email");
 
-File.sync({ force: true });
+//File.sync({ force: true });
 
 File.belongsTo(User, { as: "senderUser", foreignKey: "senderId" });
-File.belongsTo(Ticket, { as: "ticket", foreignKey: "ticketId" });
-
-const create = async ({ ticketId, senderId, from, fileAddress }) => {
+//File.hasOne(Ticket, { foreignKey: "fileId" });
+const create = async ({ senderId, from, fileAddress }) => {
   return await File.create({
-    ticketId,
     senderId,
     from,
     fileAddress,
@@ -32,18 +30,24 @@ const upload = multer({ storage: storage });
 exports.fields = upload.single("pdf");
 exports.save = catchAsync(async (req, res, next) => {
   let file = req.file;
+  if (!req.file) {
+    return next();
+  }
   let name = file.filename;
   create({
-    ticketId: req.body.ticketId,
     senderId: req.user.id,
     from: req.user.role,
     fileAddress: name,
+  }).then((file) => {
+    req.fileId = file.id;
+    next();
   });
-  new Email(
-    JSON.stringify(`You have file from : ${req.user.username} `)
-  ).setup();
-  res.send("done");
+
+  // new Email(
+  //   JSON.stringify(`You have file from : ${req.user.username} `)
+  // ).setup();
 });
+
 exports.getFiles = catchAsync(async (req, res, next) => {
   const file = await File.findAll({
     where: req.query,
@@ -63,4 +67,7 @@ exports.getFile = catchAsync(async (req, res, next) => {
 exports.downloadFile = catchAsync(async (req, res, next) => {
   const file = await File.findByPk(req.params.id);
   res.download(__dirname + "/../uploads/" + file.fileAddress);
+});
+exports.showReq = catchAsync(async (req, res, next) => {
+  next();
 });

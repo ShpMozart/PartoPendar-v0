@@ -148,6 +148,9 @@ exports.protect = catchAsync(async (req, res, next) => {
   } else if (req.cookies.jwt) {
     token = req.cookies.jwt;
   }
+  // if (!req.cookies.refreshToken) {
+  //   return next(new AppError("Please log in to get access.", 401));
+  // }
 
   // 2) Verification token
   let decoded;
@@ -167,9 +170,7 @@ exports.protect = catchAsync(async (req, res, next) => {
           return next(new AppError("Please log in to get access.", 401));
         }
       }
-      if (!req.cookies.refreshToken) {
-        return next(new AppError("Please log in to get access.", 401));
-      }
+
       const token = signToken(decodedRefreshToken.id);
       res.cookie("jwt", token, {
         maxAge: 1000 * 60 * 60 * 24,

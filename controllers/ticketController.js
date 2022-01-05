@@ -5,17 +5,20 @@ const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 const Message = require("../models/Message");
 const Email = require("./../utils/email");
-Ticket.sync({ force: true });
+const Factor = require("../models/Factor");
+//Ticket.sync({ force: true });
 
 Ticket.belongsTo(User, { as: "senderUser", foreignKey: "senderId" });
 Ticket.belongsTo(User, { as: "workerUser", foreignKey: "workerId" });
 Ticket.hasMany(Message, { as: "message", foreignKey: "ticketId" });
-Ticket.hasMany(File, { as: "files", foreignKey: "ticketId" });
+Ticket.belongsTo(File, { foreignKey: "fileId" });
+Ticket.hasMany(Factor, { foreignKey: "ticketId" });
 
 exports.getAll = catchAsync(async (req, res, next) => {
   const ticket = await Ticket.findAll({
     where: req.query,
   });
+  console.log(req.maxId);
   res.status(200).json({
     status: "success",
     results: ticket.length,
@@ -38,7 +41,6 @@ exports.getAllClientTicket = catchAsync(async (req, res, next) => {
     },
   });
 });
-
 exports.getAllWorkerTicket = catchAsync(async (req, res, next) => {
   const ticket = await Ticket.findAll({
     where: {
@@ -54,7 +56,7 @@ exports.getAllWorkerTicket = catchAsync(async (req, res, next) => {
   });
 });
 exports.getTicket = catchAsync(async (req, res, next) => {
-  const ticket = await Ticket.findByPk((req.params.id - 23321) / 234, {
+  const ticket = await Ticket.findByPk(req.params.id, {
     include: [
       {
         model: User,
@@ -72,8 +74,10 @@ exports.getTicket = catchAsync(async (req, res, next) => {
         //attributes: ["username"],
       },
       {
+        model: Factor,
+      },
+      {
         model: File,
-        as: "files",
         //attributes: ["username"],
       },
     ],
@@ -81,11 +85,13 @@ exports.getTicket = catchAsync(async (req, res, next) => {
   if (!ticket) {
     return next(new AppError("No ticket found with that ID", 404));
   }
-  if (req.user.id != ticket.senderId) {
-    if (req.user.id != ticket.workerId) {
-      return next(new AppError("No ticket found with that ID", 404));
-    }
-  }
+  // if (req.user.role != "admin" && req.user.role != "boss") {
+  //   if (req.user.id != ticket.senderId) {
+  //     if (req.user.id != ticket.workerId) {
+  //       return next(new AppError("No ticket found with that ID", 404));
+  //     }
+  //   }
+  // }
   res.status(200).json({
     status: "success",
     data: {
@@ -101,7 +107,7 @@ const createTicket = async ({
   center,
   title,
   text,
-  file,
+  fileId,
   status,
 }) => {
   return await Ticket.create({
@@ -112,7 +118,7 @@ const createTicket = async ({
     center,
     title,
     text,
-    file,
+    fileId,
     status,
   });
 };
@@ -125,9 +131,11 @@ exports.createTicket = catchAsync(async (req, res, next) => {
     center: req.body.center,
     title: req.body.title,
     text: req.body.text,
-    file: req.body.file,
+    factor: req.body.factor,
+    fileId: req.fileId,
     status: req.body.status,
   }).then((ticket) => {
+    console.log(req.fileId);
     // new Email(JSON.stringify(ticket)).setup(); //send email if ticket send by client
     res.status(201).json({
       status: "success",

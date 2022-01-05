@@ -1,16 +1,22 @@
 const Sequelize = require("sequelize");
 const db = require("../db/database");
 
-const Message = db.define("message", {
+const Factor = db.define("factor", {
   ticketId: {
     type: Sequelize.INTEGER,
   },
-  from: {
+  name: {
     type: Sequelize.STRING,
   },
-  text: {
+  tedad: {
+    type: Sequelize.INTEGER,
+  },
+  vahed: {
+    type: Sequelize.STRING,
+  },
+  tozihat: {
     type: Sequelize.STRING,
   },
 });
 
-module.exports = Message;
+module.exports = Factor;
