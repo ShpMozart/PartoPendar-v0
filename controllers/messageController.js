@@ -3,7 +3,7 @@ const Ticket = require("./../models/Ticket");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 
-//Message.sync({ force: true });
+Message.sync({ force: true });
 
 Message.belongsTo(Ticket, { as: "ticket", foreignKey: "ticketId" });
 

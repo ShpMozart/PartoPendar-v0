@@ -6,7 +6,7 @@ const AppError = require("./../utils/appError");
 const Message = require("../models/Message");
 const Email = require("./../utils/email");
 const Factor = require("../models/Factor");
-//Ticket.sync({ force: true });
+Ticket.sync({ force: true });
 
 Ticket.belongsTo(User, { as: "senderUser", foreignKey: "senderId" });
 Ticket.belongsTo(User, { as: "workerUser", foreignKey: "workerId" });
