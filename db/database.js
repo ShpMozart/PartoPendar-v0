@@ -4,7 +4,7 @@ const Sequelize = require("sequelize");
 const database = new Sequelize({
   database: "partopendar",
   username: "root",
-  password: "",
+  password: "@Mir1381",
   dialect: "mysql",
   timestamps: false, // I do not want timestamp fields by default
   dialectOptions: {

@@ -6,7 +6,7 @@ const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 const Message = require("../models/Message");
 const Email = require("./../utils/email");
-Factor.sync({ force: true });
+//Factor.sync({ force: true });
 
 Factor.belongsTo(Ticket, { foreignKey: "ticketId" });
 
@@ -85,4 +85,12 @@ exports.deleteFactor = catchAsync(async (req, res, next) => {
     status: "success",
     data: null,
   });
+});
+exports.clearFactor = catchAsync(async (req, res, next) => {
+  await Factor.destroy({
+    where: {
+      ticketId: req.body[0].ticketId,
+    },
+  });
+  next();
 });

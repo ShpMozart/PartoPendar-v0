@@ -4,7 +4,7 @@ const Center = require("./../models/Center");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 
-City.sync({ force: true });
+//City.sync({ force: true });
 City.hasMany(Center, { as: "centers", foreignKey: "cityId" });
 const createCity = async ({ city }) => {
   return await City.create({
@@ -29,7 +29,9 @@ exports.getAll = catchAsync(async (req, res, next) => {
   });
 });
 exports.getCity = catchAsync(async (req, res, next) => {
-  const city = await City.findByPk(req.params.id);
+  const city = await City.findByPk(req.params.id, {
+    include: [{ model: Center }],
+  });
   if (!city) {
     return next(new AppError("No city found with that ID", 404));
   }

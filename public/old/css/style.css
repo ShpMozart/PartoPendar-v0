@@ -1,0 +1,284 @@
+@font-face {
+  font-family: Vazir;
+  src: url('../fonts/Vazir-Bold.eot');
+  src: url('../fonts/Vazir-Bold.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/Vazir-Bold.woff2') format('woff2'),
+    url('../fonts/Vazir-Bold.woff') format('woff'),
+    url('../fonts/Vazir-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: Vazir-bold;
+  src: url('../fonts/Vazir-Black.eot');
+  src: url('../fonts/Vazir-Black.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/Vazir-Black.woff2') format('woff2'),
+    url('../fonts/Vazir-Black.woff') format('woff'),
+    url('../fonts/Vazir-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+@font-face {
+  font-family: Vazir-medium;
+  src: url('../fonts/Vazir-Medium.eot');
+  src: url('../fonts/Vazir-Medium.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/Vazir-Medium.woff2') format('woff2'),
+    url('../fonts/Vazir-Medium.woff') format('woff'),
+    url('../fonts/Vazir-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: Vazir;
+  src: url('../fonts/Vazir-Light.eot');
+  src: url('../fonts/Vazir-Light.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/Vazir-Light.woff2') format('woff2'),
+    url('../fonts/Vazir-Light.woff') format('woff'),
+    url('../fonts/Vazir-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: Vazir;
+  src: url('../fonts/Vazir-Thin.eot');
+  src: url('../fonts/Vazir-Thin.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/Vazir-Thin.woff2') format('woff2'),
+    url('../fonts/Vazir-Thin.woff') format('woff'),
+    url('../fonts/Vazir-Thin.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+}
+
+/*Reset default*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+/*----Color Palet-----
+base: #efefef
+base-2 : #e1e1e1
+secondery: #363896
+primary: #219ad6
+base-text-color : #333
+*/
+
+body {
+  direction: rtl;
+  font-family: vazir-medium;
+  line-height: 1.5em;
+  color: #333;
+  background-color: #efefef;
+  overflow: hidden;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: bold;
+}
+
+a {
+  text-decoration: none;
+  color: #333;
+}
+
+li {
+  list-style: none;
+}
+
+input {
+  font-family: vazir-medium;
+  border-radius: 5px;
+  border: none;
+  padding: 5px;
+  width: 100%;
+  margin: 15px 0px;
+}
+
+input:focus {
+  outline: none;
+  border-color: #219ad6;
+  box-shadow: 0 0 10px #719ece;
+}
+
+/*Padding classes*/
+.pd-10 {
+  padding: 10px;
+}
+
+.pd-20 {
+  padding: 20px;
+}
+
+.pd-30 {
+  padding: 30px;
+}
+
+/*Margin classes*/
+.mg-10 {
+  margin: 10px;
+}
+
+.mg-20 {
+  margin: 20px;
+}
+
+.mg-30 {
+  margin: 30px;
+}
+
+/*Color classes*/
+.primary-color {
+  color: #219ad6;
+}
+
+/*Backgrond*/
+.background-pic {
+  position: absolute;
+  z-index: -10;
+  bottom: 70px;
+  width: 30%;
+  left: 0;
+  opacity: 0.07;
+}
+
+.background-pic-primary {
+  position: absolute;
+  z-index: -10;
+  top: 100px;
+  width: 30%;
+  right: 0;
+  transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  opacity: 0.07;
+}
+
+/*Container*/
+.container {
+  height: 90vh;
+  margin: auto;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/*Navbar*/
+.navbar nav img {
+  height: 120px;
+}
+
+/*User Input*/
+.user-box {
+  width: 100%;
+  max-width: 500px;
+}
+
+.user-box form {
+  background-color: #e1e1e1;
+  border-radius: 30px;
+  padding: 20px 0px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.user-box input {
+  margin: 10px 0px 15px 0px;
+}
+
+#user {
+  width: 80%;
+}
+
+#pass {
+  width: 80%;
+}
+
+.user-box label {
+  margin-right: 10px;
+}
+
+.user-box #submit-btn {
+  background-color: #219ad6;
+  color: #fff;
+  width: 50%;
+  align-self: center;
+  margin-bottom: -20px;
+  position: relative;
+  top: -25px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.user-box #submit-btn:hover {
+  background-color: #1f8dc4;
+}
+
+.box-footer {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.box-footer a {
+  color: #363896;
+}
+
+.uil-angle-left {
+  font-size: 22px;
+}
+
+#eye-close {
+  position: relative;
+  top: -39px;
+  right: 91%;
+  cursor: pointer;
+}
+
+#eye-open {
+  position: relative;
+  top: -39px;
+  right: 91%;
+  cursor: pointer;
+  display: none;
+}
+
+/*Footer*/
+.footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.icons a {
+  color: #a3a3a3;
+  font-size: 20px;
+  transition: all 0.2s ease-in-out;
+}
+
+.icons a:hover {
+  color: #219ad6;
+}
+
+.copy {
+  direction: ltr;
+  font-size: 8px;
+  color: #a3a3a3;
+}

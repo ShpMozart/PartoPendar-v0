@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/img/logo/logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="stylesheet" href="../css/new-req.css">
+    <title>پرتوپندار | وضعیت درخواست</title>
+</head>
+<body id="body">
+    <div class="navbar">
+        <div class="pic-menu close">
+            <ul class="pic-menu-tabs">
+                <img id="menu-prof" alt="prof-picture">
+                <div class="personal-data">
+                    <label for="name">نام و نام خانوادگی: <p id="name" class="left-data"></p></label>
+                    <label for="permision">نوع کاربری: <p id="state" class="left-data"></p></label>
+                    <label for="email">ایمیل: <p id="email" class="left-data"></p></label>
+                </div>
+                <a id="prev">بازگشت<i class="uil uil-angle-left"></i></a>
+            </ul>
+        </div>
+        <div class="prof-pic">
+            <img id="prof-pic" alt="prof-pic">
+        </div>
+            <img id ="logo" src="../img/logo/logo.png" alt="logo">
+            <div class="menu-btn">
+                <div class="menu-btn__burger">
+                </div>
+            </div>
+            <div class="menu-tabs close">
+                <ul class="menu-list">
+                    <a href="./panel-cust.html"><li>خانه</li></a>
+                    <a href="./new-req.html"><li>درخواست جدید</li></a>
+                    <a href="./req-cus.html"><li>مدیریت درخواست ها</li></a>
+                </ul>
+            </div>
+    </div>
+    <div class="container">
+        <div class="header">
+            <h5>ثبت درخواست جدید</h5>
+        </div>
+        <div class="ticket-box">
+            <div class="ticket-header">
+                <div class="city">
+                    <h5>انتخاب شهر:</h5>
+                    <select name="city" id="city">
+                        
+                    </select>
+                </div>
+                <div class="center">
+                    <h5>انتخاب مرکز:</h5>
+                    <select name="center" id="center">
+                    </select>
+                </div>
+                <div class="add-center">
+                    <h5>نام مرکز:</h5>
+                    <input id="added-center" type="text">
+                </div>
+            </div>
+            <div class="ticket-problem">
+                    <div class="prob-title">
+                        <li>
+                            <h5>عنوان درخواست:</h5>
+                            <input id="title" type="text">
+                        </li>
+                    </div>
+                    <div class="prob-info">
+                        <div class="prob-text">
+                            <li><h5>شرح درخواست:</h5></li>
+                            <textarea name="text" id="text" cols="25" rows="4" placeholder="متن خود را بنویسید ..."></textarea>
+                        </div>
+                        <div class="prob-file">
+                            <li>
+                                <h5>فایل ضمیمه: </h5>
+                                <h6>(pdf با سایز کمتر از 1MB)</h6>
+                            </li>
+                            <input name="pdf" id="file" type="file" style="display: none;" onchange="uploadFile(this)">
+                            <label for="file">
+                                <i id="uploadLogo" class="uil uil-file-upload"></i>
+                                <i id="uploadDone" class="uil uil-file-check"></i>
+                                <i id="fileError" class="uil uil-file-exclamation"></i>
+                            </label>
+                        </div>
+                    </div>
+            </div>
+            <div class="ticket-footer">
+                <button id="submit" class="btn">
+                    ثبت درخواست
+                </button>
+            </div>
+        </div>
+    </div>
+        
+    <div class="footer">
+        <div class="icons">
+            <a href="#"><i class="uil uil-instagram"></i></a>
+            <a href="mailto: partopendar@gmail.com"><i class="uil uil-envelope"></i></a>
+            <a href="tel: +989125790344"><i class="uil uil-phone"></i></a>
+        </div>
+        <div class="copy">
+            <p>2021 Copyright <span class="primary-color"> Parto Pendar</span>, Inc. All rights reserved.</p>
+        </div>
+    </div>
+    <script src="../js/new-req.js"></script>
+</body>
+</html>

@@ -4,7 +4,7 @@ const User = require("./../models/User");
 const catchAsync = require("./../utils/catchAsync");
 const AppError = require("./../utils/appError");
 
-Gozaresh.sync({ force: true });
+//Gozaresh.sync({ force: true });
 
 Gozaresh.belongsTo(User, { foreignKey: "userId" });
 

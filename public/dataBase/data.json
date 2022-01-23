@@ -1,0 +1,15 @@
+
+{
+    "royaee": {
+        "img": "../img/persons/1.jpg",
+        "name": "محمد رویائی",
+        "state": "مدیریت",
+        "email": "royaee@partopendr.com"
+    },
+    "adora": {
+        "img": "../img/persons/2.jpg",
+        "name": "شرکت آدوراطب",
+        "state": "مشتری",
+        "email": "info@adora.com"
+    }
+}
