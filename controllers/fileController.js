@@ -40,7 +40,10 @@ exports.save = catchAsync(async (req, res, next) => {
     fileAddress: name,
   }).then((file) => {
     req.fileId = file.id;
-    next();
+    res.status(200).json({
+      data: file,
+    });
+    //next();
   });
 
   // new Email(

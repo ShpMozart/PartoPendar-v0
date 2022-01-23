@@ -74,11 +74,11 @@ const createSendToken = (user, statusCode, req, res) => {
       return res.sendFile(showPath);
     } else if (user.dataValues.role === "boss") {
       //panel boss
-      showPath = path.join(__dirname + "/../public/boss.html");
+      showPath = path.join(__dirname + "/../public/htmls/panel-admin.html");
       return res.sendFile(showPath);
     } else if (user.dataValues.role === "client") {
       //panel client
-      showPath = path.join(__dirname + "/../public/client.html");
+      showPath = path.join(__dirname + "/../public/htmls/panel-cust.html");
       return res.sendFile(showPath);
     } else if (user.dataValues.role === "worker") {
       //panel worker
@@ -227,7 +227,7 @@ exports.isLoggedIn = async (req, res, next) => {
       // THERE IS A LOGGED IN USER
       req.user = freshUser;
       res.locals.user = freshUser;
-      const loader = path.join(__dirname + "/../public/loader.html");
+      const loader = path.join(__dirname + "/../public/htmls/loader.html");
       res.sendFile(loader);
     } catch (err) {
       return next();

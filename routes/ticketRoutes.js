@@ -2,16 +2,20 @@ const express = require("express");
 const authController = require("./../controllers/authController");
 const ticketController = require("./../controllers/ticketController");
 const fileController = require("./../controllers/fileController");
+const viewsController = require("./../controllers/viewController");
 
 const router = express.Router();
 
 //not secure we have to use authController.restrict and protect in future
+
+/*
+fileController.fields,
+fileController.save,
+*/
 router.post(
   "/create",
   authController.protect,
   authController.restrictTo("admin", "client"),
-  fileController.fields,
-  fileController.save,
   ticketController.createTicket
 );
 router.get("/", fileController.showReq, ticketController.getAll);

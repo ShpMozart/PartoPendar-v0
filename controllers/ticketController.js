@@ -131,10 +131,10 @@ exports.createTicket = catchAsync(async (req, res, next) => {
     center: req.body.center,
     title: req.body.title,
     text: req.body.text,
-    fileId: req.fileId,
+    fileId: req.body.fileId,
     status: req.body.status,
   }).then((ticket) => {
-    console.log(req.fileId);
+    console.log(req.file);
     // new Email(JSON.stringify(ticket)).setup(); //send email if ticket send by client
     res.status(201).json({
       status: "success",
