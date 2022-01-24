@@ -1,5 +1,6 @@
 const path = require("path");
 const catchAsync = require("./../utils/catchAsync");
+const Ticket = require("./../models/Ticket");
 ////////////////////UPDATE TO SHOW DIFFERENT PANELS TO USERS//////////////////////
 exports.login_get = catchAsync(async (req, res, next) => {
   const showPath = path.join(__dirname + "/../public/htmls/login.html");
@@ -7,7 +8,7 @@ exports.login_get = catchAsync(async (req, res, next) => {
 });
 exports.panel_get = catchAsync(async (req, res, next) => {
   const user = req.user;
-  let showPath = path.join(__dirname + "/../public/password.html");
+  let showPath = path.join(__dirname + "/../public/htmls/password.html");
   if (!user.dataValues.passwordChanged) {
     return res.sendFile(showPath);
   } else {
@@ -52,5 +53,17 @@ exports.clientRequest = catchAsync(async (req, res, nex) => {
 });
 exports.acceptCus = catchAsync(async (req, res, nex) => {
   const show = path.join(__dirname + "/../public/htmls/accpt-cus.html");
+  res.sendFile(show);
+});
+exports.customerProccessingTicket = catchAsync(async (req, res, nex) => {
+  const show = path.join(
+    __dirname + "/../public/htmls/customer-proccessing-ticket.html"
+  );
+  res.sendFile(show);
+});
+exports.sentTicket = catchAsync(async (req, res, nex) => {
+  const show = path.join(
+    __dirname + "/../public/htmls/boss-accpted-ticket.html"
+  );
   res.sendFile(show);
 });

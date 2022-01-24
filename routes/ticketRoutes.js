@@ -35,7 +35,7 @@ router.get("/:id", ticketController.getTicket);
 router.post(
   "/update/:id",
   authController.protect,
-  authController.restrictTo("boss", "admin"),
+  authController.restrictTo("boss", "admin", "client"),
   ticketController.updateTicket
 );
 router.delete(

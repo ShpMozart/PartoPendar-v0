@@ -11,6 +11,8 @@ router.get("/req", viewsController.showTickets);
 router.get("/req/:id", viewsController.showTicket);
 router.get("/newReq", viewsController.newRequest);
 router.get("/clientReq", viewsController.clientRequest);
-router.get("/acceptCus", viewsController.acceptCus);
+router.get("/clientReq/:id", viewsController.customerProccessingTicket);
+router.get("/acceptCus/:id", viewsController.acceptCus);
+router.get("/sentTicket/:id", viewsController.sentTicket);
 
 module.exports = router;

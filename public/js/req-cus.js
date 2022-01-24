@@ -1,3 +1,5 @@
+const IP = "http://192.168.1.104:3000";
+
 //Variables
 const menuBtn = document.querySelector(".menu-btn");
 const menuTabs = document.querySelector(".menu-tabs");
@@ -166,6 +168,8 @@ class Tickets {
 //fetch tickets api
 
 //get data from api function
+
+let apiMainData;
 async function getAPI(data) {
   let apiData = await fetch(data)
     .then((value) => value.json())
@@ -173,6 +177,7 @@ async function getAPI(data) {
       return valu;
     });
 
+  apiMainData = apiData;
   return apiData;
 }
 
@@ -184,6 +189,7 @@ async function setTicket() {
   resualt.data.ticket.forEach((ticket) => {
     new Tickets(ticket);
   });
+  apiMainData = resualt;
 }
 setTicket();
 
@@ -254,12 +260,36 @@ function proccessingFilter() {
   });
 }
 
+async function selectedTicket() {
+  await getAPI();
+}
+selectedTicket();
+
 setTimeout(() => {
   document.querySelectorAll(".main-box").forEach((item) => {
     item.addEventListener("click", () => {
-      location.assign(`req/${item.id * 234 + 23321}`);
+      // location.assign(`clientReq/${item.id * 234 + 23321}`);
+      console.log(item.id);
+
+      apiMainData.data.ticket.forEach((ticket) => {
+        if (item.id == ticket.id) {
+          if (ticket.status === "pending") {
+            location.assign(`clientReq/${item.id * 234 + 23321}`);
+          } else if (ticket.status === "proccessing") {
+            location.assign(`acceptCus/${item.id * 234 + 23321}`);
+          }
+        }
+      });
     });
   });
 }, 500);
 
 //assign location for each ticket
+async function logout() {
+  document.querySelector("#logout").classList.add("logout-active");
+  await getAPI("http://192.168.1.104:3000/api/v1/users/logout").then(
+    (response) => {
+      location.assign("/");
+    }
+  );
+}

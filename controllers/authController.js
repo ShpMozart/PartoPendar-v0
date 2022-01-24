@@ -64,7 +64,7 @@ const createSendToken = (user, statusCode, req, res) => {
   user.password = undefined;
 
   /////////////////////////////// HATMAN CHECK SHAVAD ////////////////////////
-  let showPath = path.join(__dirname + "/../public/password.html");
+  let showPath = path.join(__dirname + "/../public/htmls/password.html");
   if (!user.dataValues.passwordChanged) {
     return res.sendFile(showPath);
   } else {
@@ -238,6 +238,10 @@ exports.isLoggedIn = async (req, res, next) => {
 
 exports.logout = (req, res) => {
   res.cookie("jwt", "loggedout", {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+  res.cookie("refreshToken", "loggedout", {
     expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true,
   });

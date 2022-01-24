@@ -1,3 +1,4 @@
+const IP = "http://192.168.1.104:3000";
 //elements
 let closeEye = document.querySelector("#eye-close");
 let openEye = document.querySelector("#eye-open");

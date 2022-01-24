@@ -1,3 +1,5 @@
+const IP = "http://192.168.1.104:3000";
+
 //Variables
 const menuBtn = document.querySelector(".menu-btn");
 const menuTabs = document.querySelector(".menu-tabs");
@@ -153,4 +155,12 @@ async function getAPI(data) {
     });
 
   return apiData;
+}
+async function logout() {
+  document.querySelector("#logout").classList.add("logout-active");
+  await getAPI("http://192.168.1.104:3000/api/v1/users/logout").then(
+    (response) => {
+      location.assign("/");
+    }
+  );
 }

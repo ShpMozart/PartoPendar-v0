@@ -1,3 +1,5 @@
+const IP = "http://192.168.1.104:3000";
+
 //Variables
 const menuBtn = document.querySelector(".menu-btn");
 const menuTabs = document.querySelector(".menu-tabs");
@@ -378,7 +380,7 @@ class Ticket {
         postData(`${IP}/api/v1/tickets/update/${ticket.id}`, {
           status: "proccessing",
         }).then((res) => {
-          location.assign("/acceptCus");
+          location.assign("/panel");
         });
         console.log(Factor);
       });
@@ -395,6 +397,7 @@ async function tikcetSetup(id) {
   //send to the class
   new Ticket(data);
 }
+
 tikcetSetup((pathname - 23321) / 234);
 
 //get data from api function
@@ -427,4 +430,12 @@ async function postData(url = "", data = {}) {
   });
 
   return response.json(); // parses JSON response into native JavaScript objects
+}
+async function logout() {
+  document.querySelector("#logout").classList.add("logout-active");
+  await getAPI("http://192.168.1.104:3000/api/v1/users/logout").then(
+    (response) => {
+      location.assign("/");
+    }
+  );
 }

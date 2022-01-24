@@ -597,7 +597,6 @@ textarea {
 .ticket-problem {
   width: 100%;
   padding: 5px;
-  border-bottom: 0.5px solid #e8e8e8;
 }
 
 .ticket-problem li {
@@ -671,6 +670,7 @@ textarea {
   margin-left: -10px;
   color: #e8e8e8;
 }
+
 #logout {
   font-size: 15px;
   margin-top: 50px;
@@ -688,6 +688,7 @@ textarea {
   top: 2%;
   margin-left: 5px;
 }
+
 /*Footer*/
 .footer {
   display: flex;

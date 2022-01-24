@@ -31,5 +31,8 @@ const Ticket = db.define("ticket", {
     type: Sequelize.ENUM(["pending", "proccessing", "done"]),
     defaultValue: "pending",
   },
+  signedByClient: {
+    type: Sequelize.BOOLEAN,
+  },
 });
 module.exports = Ticket;

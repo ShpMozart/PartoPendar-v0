@@ -18,7 +18,6 @@ exports.getAll = catchAsync(async (req, res, next) => {
   const ticket = await Ticket.findAll({
     where: req.query,
   });
-  console.log(req.maxId);
   res.status(200).json({
     status: "success",
     results: ticket.length,
@@ -109,6 +108,7 @@ const createTicket = async ({
   text,
   fileId,
   status,
+  signedByClient,
 }) => {
   return await Ticket.create({
     senderId,
@@ -120,6 +120,7 @@ const createTicket = async ({
     text,
     fileId,
     status,
+    signedByClient,
   });
 };
 exports.createTicket = catchAsync(async (req, res, next) => {

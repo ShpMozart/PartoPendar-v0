@@ -1,3 +1,5 @@
+const IP = "http://192.168.1.104:3000";
+
 //Variables
 const menuBtn = document.querySelector(".menu-btn");
 const menuTabs = document.querySelector(".menu-tabs");
@@ -179,7 +181,7 @@ async function getAPI(data) {
 
   return apiData;
 }
-
+let apiMainData;
 async function setTicket() {
   let ticketURL = `${IP}/api/v1/tickets`;
 
@@ -188,6 +190,7 @@ async function setTicket() {
   resualt.data.ticket.forEach((ticket) => {
     new Tickets(ticket);
   });
+  apiMainData = resualt;
 }
 setTicket();
 
@@ -261,9 +264,31 @@ function proccessingFilter() {
 setTimeout(() => {
   document.querySelectorAll(".main-box").forEach((item) => {
     item.addEventListener("click", () => {
-      location.assign(`req/${item.id * 234 + 23321}`);
+      //location.assign(`req/${item.id * 234 + 23321}`);
+      apiMainData.data.ticket.forEach((ticket) => {
+        if (item.id == ticket.id) {
+          if (ticket.status === "pending") {
+            location.assign(`req/${item.id * 234 + 23321}`);
+          } else if (ticket.status === "proccessing") {
+            if (ticket.signedByClient != null) {
+              //boss accepted ticket
+              location.assign(`sentTicket/${item.id * 234 + 23321}`);
+            } else if (ticket.signedByClient == null) {
+              //misaze
+            }
+          }
+        }
+      });
     });
   });
 }, 500);
 
 //assign location for each ticket
+async function logout() {
+  document.querySelector("#logout").classList.add("logout-active");
+  await getAPI("http://192.168.1.104:3000/api/v1/users/logout").then(
+    (response) => {
+      location.assign("/");
+    }
+  );
+}

@@ -1,3 +1,4 @@
+const IP = "http://192.168.1.104:3000";
 //Variables
 const menuBtn = document.querySelector(".menu-btn");
 const menuTabs = document.querySelector(".menu-tabs");
@@ -210,8 +211,13 @@ class Ticket {
 
     let firsttime = true;
     let counter = 1;
+    let factorChecking;
 
-    let factorChecking = false;
+    if (ticket.signedByClient) {
+      factorChecking = true;
+    } else {
+      factorChecking = false;
+    }
     let employes = ["مسعود اسدی", "علی حیدری"];
 
     function factorCheck() {
@@ -269,17 +275,6 @@ class Ticket {
         let resualtHeader = document.createElement("h5");
         resualtHeader.textContent = "فاکتور توسط مشتری تایید نشده است.";
         resualt.appendChild(resualtHeader);
-        let customerMsg = document.createElement("div");
-        customerMsg.classList.add("customer-msg");
-        let customerLi = document.createElement("li");
-        let liTitle = document.createElement("h5");
-        liTitle.textContent = "دلیل تایید نشدن فاکتور :";
-        customerLi.appendChild(liTitle);
-        let liParg = document.createElement("p");
-        liParg.textContent =
-          "قیمت دوربین ها بسیار بالا است و تعداد دوربین ها نیز کم است.";
-        customerLi.appendChild(liParg);
-        customerMsg.appendChild(customerLi);
         let bossAnswer = document.createElement("div");
         bossAnswer.classList.add("boss-answer");
         let bossLi = document.createElement("li");
@@ -289,7 +284,7 @@ class Ticket {
         let bossTextArea = document.createElement("textarea");
         bossTextArea.name = "boss-answer";
         bossTextArea.id = "answer-boss";
-        bossTextArea.setAttribute("cols", "49");
+        bossTextArea.setAttribute("cols", "39");
         bossTextArea.setAttribute("rows", "4");
         bossTextArea.setAttribute("placeholder", "متن مورد نظر...");
         bossLi.appendChild(bossTextArea);
@@ -308,7 +303,6 @@ class Ticket {
         buttons.appendChild(addFactor);
 
         rejectFactor.appendChild(resualt);
-        rejectFactor.appendChild(customerMsg);
         rejectFactor.appendChild(bossAnswer);
         rejectFactor.appendChild(buttons);
 
@@ -435,7 +429,7 @@ class Ticket {
           let fileds = document.createElement("div");
           fileds.classList.add("fileds");
           let cntr = document.createElement("h5");
-          cntr.textContent = `${factor.id}-`;
+          cntr.textContent = `${counter}-`;
           fileds.appendChild(cntr);
           let objj = document.createElement("input");
           objj.type = "text";
@@ -473,7 +467,7 @@ class Ticket {
           let fileds = document.createElement("div");
           fileds.classList.add("fileds");
           let cntr = document.createElement("h5");
-          cntr.textContent = `${factor.id}-`;
+          cntr.textContent = `${counter}-`;
           fileds.appendChild(cntr);
           let obj = document.createElement("input");
           obj.type = "text";
@@ -541,52 +535,53 @@ class Ticket {
       let addFactor = document.querySelector("#add-factor");
       let submmit = document.querySelector("#submit");
 
-      addFactor.addEventListener("click", () => {
-        adFactor();
-      });
+      if (addFactor != null) {
+        addFactor.addEventListener("click", () => {
+          adFactor();
+        });
+      }
 
       let cntr = 1;
-      submmit.addEventListener("click", () => {
-        let fieldsObj = document.querySelectorAll(".fileds");
-        fieldsObj.forEach((element) => {
-          let objct = element.querySelectorAll("#obj");
-          objct.forEach((elmnt) => {
-            let val = element.querySelectorAll("#val");
-            val.forEach((varElmnt) => {
-              let unit = element.querySelectorAll("#unit-selector");
-              unit.forEach((unitElmnt) => {
-                let factorText = element.querySelectorAll("#factor-info");
-                factorText.forEach((textElmnt) => {
-                  let factorRes = {
-                    id: `${cntr}`,
-                    objct: `${elmnt.value}`,
-                    value: `${varElmnt.value}`,
-                    unit: `${unitElmnt.value}`,
-                    text: `${textElmnt.value}`,
-                  };
-                  cntr = cntr + 1;
-                  Factor.push(factorRes);
+      if (submmit != null) {
+        submmit.addEventListener("click", () => {
+          let fieldsObj = document.querySelectorAll(".fileds");
+          fieldsObj.forEach((element) => {
+            let objct = element.querySelectorAll("#obj");
+            objct.forEach((elmnt) => {
+              let val = element.querySelectorAll("#val");
+              val.forEach((varElmnt) => {
+                let unit = element.querySelectorAll("#unit-selector");
+                unit.forEach((unitElmnt) => {
+                  let factorText = element.querySelectorAll("#factor-info");
+                  factorText.forEach((textElmnt) => {
+                    let factorRes = {
+                      ticketId: `${ticket.id}`,
+                      name: `${elmnt.value}`,
+                      tedad: `${varElmnt.value}`,
+                      vahed: `${unitElmnt.value}`,
+                      tozihat: `${textElmnt.value}`,
+                    };
+                    cntr = cntr + 1;
+                    Factor.push(factorRes);
+                  });
                 });
               });
             });
           });
+          let bossAnswer = document.querySelector("#answer-boss").value;
+          let bosAnswer = {
+            ticketId: `${ticket.id}`,
+            text: `${bossAnswer}`,
+          };
+          console.log(bosAnswer);
+          postData(`${IP}/api/v1/messages/create`, bosAnswer).then((res) => {
+            console.log(res);
+          });
+          postData(`${IP}/api/v1/factor/create`, Factor).then((res) => {
+            console.log(res);
+          });
         });
-        console.log(Factor);
-        let xhr = new XMLHttpRequest();
-        let url = `${IP}/api/v1/users/login`;
-        xhr.open("POST", url, true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-
-        xhr.onreadystatechange = function () {
-          if (xhr.readyState === 4 && xhr.status === 200) {
-            // Print received data from server
-            document.body.innerHTML = this.responseText;
-          }
-        };
-
-        var data = JSON.stringify({ Factor });
-        xhr.send(data);
-      });
+      }
     }, 1000);
 
     document.querySelector("#download-file").addEventListener("click", () => {
@@ -600,7 +595,7 @@ class Ticket {
   }
 }
 
-let pathname = location.pathname;
+let pathname = location.pathname.slice(12) * 1;
 
 async function tikcetSetup(id) {
   let url = `${IP}/api/v1/tickets/${id}`;
@@ -609,7 +604,7 @@ async function tikcetSetup(id) {
   //send to the class
   new Ticket(data);
 }
-tikcetSetup(1);
+tikcetSetup((pathname - 23321) / 234);
 
 //get data from api function
 async function getAPI(data) {
@@ -622,3 +617,30 @@ async function getAPI(data) {
 }
 
 //eventListeners with timeout
+async function postData(url = "", data = {}) {
+  // Default options are marked with *
+  const response = await fetch(url, {
+    method: "POST", // *GET, POST, PUT, DELETE, etc.
+    mode: "cors", // no-cors, *cors, same-origin
+    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: "same-origin", // include, *same-origin, omit
+    headers: {
+      "Content-Type": "application/json",
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    redirect: "follow", // manual, *follow, error
+    referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    body: JSON.stringify(data), // body data type must match "Content-Type" header
+  });
+
+  return response.json(); // parses JSON response into native JavaScript objects
+}
+
+async function logout() {
+  document.querySelector("#logout").classList.add("logout-active");
+  await getAPI("http://192.168.1.104:3000/api/v1/users/logout").then(
+    (response) => {
+      location.assign("/");
+    }
+  );
+}

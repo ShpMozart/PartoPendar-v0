@@ -1,4 +1,4 @@
-const IP = "http://194.62.43.146:3000";
+const IP = "http://192.168.1.104:3000";
 //Variables
 const menuBtn = document.querySelector(".menu-btn");
 const menuTabs = document.querySelector(".menu-tabs");
@@ -275,7 +275,7 @@ class Ticket {
           let fileds = document.createElement("div");
           fileds.classList.add("fileds");
           let cntr = document.createElement("h5");
-          cntr.textContent = `${factor.id}-`;
+          cntr.textContent = `${counter}-`;
           fileds.appendChild(cntr);
           let objj = document.createElement("input");
           objj.setAttribute("readOnly", true);
@@ -311,7 +311,7 @@ class Ticket {
           let fileds = document.createElement("div");
           fileds.classList.add("fileds");
           let cntr = document.createElement("h5");
-          cntr.textContent = `${factor.id}-`;
+          cntr.textContent = `${counter}-`;
           fileds.appendChild(cntr);
           let obj = document.createElement("input");
           obj.type = "text";
@@ -364,8 +364,28 @@ class Ticket {
 
     sendBtn.addEventListener("click", () => {
       if (activeInputCheck) {
-        ``;
+        postData(
+          `http://192.168.1.104:3000/api/v1/tickets/update/${ticket.id}`,
+          {
+            signedByClient: true,
+          }
+        ).then((data) => {
+          console.log(data);
+        });
       } else {
+        postData(
+          `http://192.168.1.104:3000/api/v1/tickets/update/${ticket.id}`,
+          {
+            signedByClient: false,
+          }
+        ).then((data) => {
+          postData("http://192.168.1.104:3000/api/v1/messages/create", {
+            ticketId: `${ticket.id}`,
+            text: textSend.value,
+          }).then((res) => {
+            console.log(res);
+          });
+        });
         console.log(textSend.value);
       }
     });
@@ -395,7 +415,7 @@ class Ticket {
   }
 }
 
-let pathname = location.pathname.slice(5) * 1;
+let pathname = location.pathname.slice(11) * 1;
 console.log(pathname);
 async function tikcetSetup(id) {
   let url = `${IP}/api/v1/tickets/${id}`;
@@ -404,7 +424,8 @@ async function tikcetSetup(id) {
   //send to the class
   new Ticket(data);
 }
-tikcetSetup(61);
+//* 234 + 23321
+tikcetSetup((pathname - 23321) / 234);
 
 //get data from api function
 async function getAPI(data) {
@@ -417,3 +438,30 @@ async function getAPI(data) {
 }
 
 //eventListeners with timeout
+async function logout() {
+  document.querySelector("#logout").classList.add("logout-active");
+  await getAPI("http://192.168.1.104:3000/api/v1/users/logout").then(
+    (response) => {
+      location.assign("/");
+    }
+  );
+}
+
+async function postData(url = "", data = {}) {
+  // Default options are marked with *
+  const response = await fetch(url, {
+    method: "POST", // *GET, POST, PUT, DELETE, etc.
+    mode: "cors", // no-cors, *cors, same-origin
+    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: "same-origin", // include, *same-origin, omit
+    headers: {
+      "Content-Type": "application/json",
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    redirect: "follow", // manual, *follow, error
+    referrerPolicy: "no-referrer", // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    body: JSON.stringify(data), // body data type must match "Content-Type" header
+  });
+
+  return response.json(); // parses JSON response into native JavaScript objects
+}
