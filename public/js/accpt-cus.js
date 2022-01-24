@@ -1,3 +1,4 @@
+const IP = "http://194.62.43.146:3000";
 //Variables
 const menuBtn = document.querySelector(".menu-btn");
 const menuTabs = document.querySelector(".menu-tabs");
@@ -385,9 +386,7 @@ class Ticket {
     }
 
     document.querySelector("#download-file").addEventListener("click", () => {
-      window.location.assign(
-        `http://192.168.1.104:3000/api/v1/files/${ticket.file.id}`
-      );
+      window.location.assign(`${IP}/api/v1/files/${ticket.file.id}`);
     });
 
     setTimeout(() => {
@@ -399,7 +398,7 @@ class Ticket {
 let pathname = location.pathname.slice(5) * 1;
 console.log(pathname);
 async function tikcetSetup(id) {
-  let url = `http://192.168.1.104:3000/api/v1/tickets/${id}`;
+  let url = `${IP}/api/v1/tickets/${id}`;
   let data = await getAPI(url);
   data = data.data.ticket;
   //send to the class

@@ -119,7 +119,7 @@ let proccessing = 0;
 let pending = 0;
 
 async function counter() {
-  let url = "http://192.168.1.104:3000/api/v1/tickets";
+  let url = `${IP}/api/v1/tickets`;
   await getAPI(url)
     .then((res) => {
       res.data.ticket.forEach((element) => {

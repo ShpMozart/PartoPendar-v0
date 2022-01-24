@@ -326,7 +326,7 @@ class Ticket {
 
     setTimeout(() => {
       document.querySelector("#file").addEventListener("click", () => {
-        location.href = `http://192.168.1.104:3000/api/v1/files/${ticket.file.id}`;
+        location.href = `${IP}/api/v1/files/${ticket.file.id}`;
       });
 
       let addFactor = document.querySelector("#add-factor");
@@ -369,23 +369,15 @@ class Ticket {
           text: `${bossAnswer}`,
         };
         console.log(bosAnswer);
-        postData(
-          "http://192.168.1.104:3000/api/v1/messages/create",
-          bosAnswer
-        ).then((res) => {
+        postData(`${IP}/api/v1/messages/create`, bosAnswer).then((res) => {
           console.log(res);
         });
-        postData("http://192.168.1.104:3000/api/v1/factor/create", Factor).then(
-          (res) => {
-            console.log(res);
-          }
-        );
-        postData(
-          `http://192.168.1.104:3000/api/v1/tickets/update/${ticket.id}`,
-          {
-            status: "proccessing",
-          }
-        ).then((res) => {
+        postData(`${IP}/api/v1/factor/create`, Factor).then((res) => {
+          console.log(res);
+        });
+        postData(`${IP}/api/v1/tickets/update/${ticket.id}`, {
+          status: "proccessing",
+        }).then((res) => {
           location.assign("/acceptCus");
         });
         console.log(Factor);
@@ -397,7 +389,7 @@ class Ticket {
 let pathname = location.pathname.slice(5) * 1;
 
 async function tikcetSetup(id) {
-  let url = `http://192.168.1.104:3000/api/v1/tickets/${id}`;
+  let url = `${IP}/api/v1/tickets/${id}`;
   let data = await getAPI(url);
   data = data.data.ticket;
   //send to the class

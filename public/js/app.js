@@ -38,13 +38,11 @@ btnClick.addEventListener("click", () => {
     username: `${username.value}`,
     password: `${password.value}`,
   };
-  postData("http://192.168.1.104:3000/api/v1/users/login", userInput).then(
-    (data) => {
-      if (data.ok) {
-        location.assign("/panel");
-      }
+  postData(`${IP}/api/v1/users/login`, userInput).then((data) => {
+    if (data.ok) {
+      location.assign("/panel");
     }
-  );
+  });
 });
 
 async function postData(url = "", data = {}) {

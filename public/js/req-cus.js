@@ -177,7 +177,7 @@ async function getAPI(data) {
 }
 
 async function setTicket() {
-  let ticketURL = "http://192.168.1.104:3000/api/v1/tickets";
+  let ticketURL = `${IP}/api/v1/tickets`;
 
   //make tickets box for each ticket & get title of them for search
   let resualt = await getAPI(ticketURL);

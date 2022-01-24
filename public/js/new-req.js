@@ -146,7 +146,7 @@ function uploadFile(target) {
 
 //submit action
 async function loadData() {
-  let apiData = await getAPI("http://192.168.1.104:3000/api/v1/city");
+  let apiData = await getAPI(`${IP}/api/v1/city`);
   apiData = apiData.data.cities;
   let citty = document.querySelector("#city");
   let centter = document.querySelector("#center");
@@ -215,7 +215,7 @@ submitAct.addEventListener("click", () => {
   let fileL = document.querySelector("#file").files[0];
   let formData = new FormData();
   formData.append("pdf", fileL);
-  fetch("http://192.168.1.104:3000/api/v1/files/upload", {
+  fetch(`${IP}/api/v1/files/upload`, {
     method: "POST",
     body: formData,
   }).then((response) => {
@@ -229,10 +229,7 @@ submitAct.addEventListener("click", () => {
         fileId: `${fileId}`,
       };
 
-      postData(
-        "http://192.168.1.104:3000/api/v1/tickets/create",
-        newTicket
-      ).then((data) => {
+      postData(`${IP}/api/v1/tickets/create`, newTicket).then((data) => {
         if (data.status === "success") {
           location.assign("/panel");
         }
